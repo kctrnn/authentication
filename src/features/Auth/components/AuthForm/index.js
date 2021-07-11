@@ -76,6 +76,7 @@ const AuthForm = ({ isLogin, onSubmit }) => {
         />
 
         <Button
+          type='submit'
           variant='contained'
           color='primary'
           fullWidth

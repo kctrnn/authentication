@@ -1,11 +1,23 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Header from "components/Header";
 import EditForm from "features/Personal/components/EditForm";
 import React from "react";
 import { Link } from "react-router-dom";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const EditPage = () => {
+  const initialValues = {
+    name: "",
+    bio: "",
+    phone: "",
+    email: "",
+    password: "",
+  };
+
+  const handleEditFormSubmit = (formValues) => {
+    console.log(formValues);
+  };
+
   return (
     <div className='personal-edit'>
       <Header />
@@ -18,7 +30,10 @@ const EditPage = () => {
           </Box>
         </Link>
 
-        <EditForm />
+        <EditForm
+          initialValues={initialValues}
+          onSubmit={handleEditFormSubmit}
+        />
       </Box>
     </div>
   );

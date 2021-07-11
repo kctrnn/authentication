@@ -138,6 +138,7 @@ const EditForm = ({ onSubmit, initialValues }) => {
         />
 
         <Button
+          type='submit'
           variant='contained'
           color='primary'
           disableElevation
