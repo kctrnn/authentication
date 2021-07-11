@@ -8,6 +8,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 const useStyles = makeStyles((theme) => ({
   input: {
     borderRadius: theme.spacing(1),
+    "& > input": {
+      padding: "16px 14px 16px 0",
+    },
   },
 }));
 
