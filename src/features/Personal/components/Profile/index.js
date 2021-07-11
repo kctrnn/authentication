@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Avatar, Box, Button, makeStyles, Typography } from "@material-ui/core";
 import Images from "constants/image";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   profile: {
@@ -56,7 +57,12 @@ const Profile = (props) => {
           </Typography>
         </Box>
 
-        <Button variant='outlined' size='small'>
+        <Button
+          variant='outlined'
+          size='small'
+          component={Link}
+          to='/account/kctrnn'
+        >
           Edit
         </Button>
       </Box>

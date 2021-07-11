@@ -1,9 +1,21 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Box, Button, makeStyles } from "@material-ui/core";
 import { InputFieldWithIcon } from "components/FormFields";
 import Icons from "constants/icons";
 import PropTypes from "prop-types";
 import React from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .required("Please enter your email")
+    .email("Please enter a valid email address"),
+
+  password: yup.string().required("Please enter your password"),
+});
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -29,14 +41,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthForm = ({ isLogin }) => {
+const AuthForm = ({ isLogin, onSubmit }) => {
   const classes = useStyles();
 
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = form;
+
   return (
-    <div className='auth-form'>
+    <div onSubmit={handleSubmit(onSubmit)} className='auth-form'>
       <form>
-        <InputFieldWithIcon type='email' placeholder='Email' name='email' />
         <InputFieldWithIcon
+          control={control}
+          type='email'
+          placeholder='Email'
+          name='email'
+        />
+
+        <InputFieldWithIcon
+          control={control}
           type='password'
           placeholder='Password'
           name='password'
@@ -48,6 +81,7 @@ const AuthForm = ({ isLogin }) => {
           fullWidth
           disableElevation
           className={classes.button}
+          disabled={isSubmitting}
         >
           {isLogin ? "Login" : "Start coding now"}
         </Button>
@@ -83,10 +117,12 @@ const AuthForm = ({ isLogin }) => {
 
 AuthForm.propTypes = {
   isLogin: PropTypes.bool,
+  onSubmit: PropTypes.func,
 };
 
 AuthForm.defaultProps = {
   isLogin: false,
+  onSubmit: null,
 };
 
 export default AuthForm;

@@ -1,9 +1,36 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Box, Button, makeStyles, Typography } from "@material-ui/core";
-import Images from "constants/image";
 import { InputField } from "components/FormFields";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import Images from "constants/image";
+import PropTypes from "prop-types";
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required("Please enter name")
+    .test("two-words", "Please enter at least two words", (value) => {
+      if (!value) return true;
+
+      const parts = value?.split(" ") || [];
+      return parts.filter((x) => Boolean(x)).length >= 2;
+    }),
+
+  bio: yup.string(),
+  phone: yup.string().matches(phoneRegExp, "Phone number is not valid"),
+
+  email: yup
+    .string()
+    .required("Please enter your email")
+    .email("Please enter a valid email address"),
+
+  password: yup.string().required("Please enter your password"),
+});
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -38,11 +65,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditForm = (props) => {
+const EditForm = ({ onSubmit, initialValues }) => {
   const classes = useStyles();
 
+  const form = useForm({
+    defaultValues: initialValues,
+    resolver: yupResolver(schema),
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = form;
+
   return (
-    <form className={classes.form}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <Typography component='h2' variant='h5' color='textPrimary'>
         Change Info
       </Typography>
@@ -65,17 +103,46 @@ const EditForm = (props) => {
       </Box>
 
       <Box maxWidth='50%'>
-        <InputField label='Name' placeholder='Enter your name...' />
-        <InputField label='Bio' placeholder='Enter your bio...' rows='4' />
-        <InputField label='Phone' placeholder='Enter your phone...' />
-        <InputField label='Email' placeholder='Enter your email...' />
-        <InputField label='Password' placeholder='Enter your new password...' />
+        <InputField
+          name='name'
+          control={control}
+          label='Name'
+          placeholder='Enter your name...'
+        />
+        <InputField
+          name='bio'
+          control={control}
+          label='Bio'
+          placeholder='Enter your bio...'
+          rows={4}
+        />
+        <InputField
+          name='phone'
+          control={control}
+          label='Phone'
+          placeholder='Enter your phone...'
+        />
+        <InputField
+          name='email'
+          control={control}
+          label='Email'
+          placeholder='Enter your email...'
+          type='email'
+        />
+        <InputField
+          name='password'
+          control={control}
+          label='Password'
+          placeholder='Enter your new password...'
+          type='password'
+        />
 
         <Button
           variant='contained'
           color='primary'
           disableElevation
           className={classes.button}
+          disabled={isSubmitting}
         >
           Save
         </Button>
@@ -84,6 +151,14 @@ const EditForm = (props) => {
   );
 };
 
-EditForm.propTypes = {};
+EditForm.propTypes = {
+  onSubmit: PropTypes.func,
+  initialValues: PropTypes.object,
+};
+
+EditForm.defaultProps = {
+  onSubmit: null,
+  initialValues: null,
+};
 
 export default EditForm;
