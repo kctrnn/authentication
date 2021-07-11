@@ -5,9 +5,9 @@ import MainPage from "./pages/MainPage";
 const Personal = () => {
   return (
     <div>
-      <MainPage />
+      {/* <MainPage /> */}
 
-      {/* <EditPage /> */}
+      <EditPage />
     </div>
   );
 };

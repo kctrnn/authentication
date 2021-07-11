@@ -10,12 +10,16 @@ const EditPage = () => {
     <div className='personal-edit'>
       <Header />
 
-      <Link to='/account'>
-        <ArrowBackIosIcon />
-        Back
-      </Link>
+      <Box maxWidth='52rem' margin='0 auto'>
+        <Link to='/account'>
+          <Box display='flex' alignItems='center' color='#2D9CDB'>
+            <ArrowBackIosIcon />
+            Back
+          </Box>
+        </Link>
 
-      <EditForm />
+        <EditForm />
+      </Box>
     </div>
   );
 };

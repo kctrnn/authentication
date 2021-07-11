@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import { Avatar, Box, Button, makeStyles, Typography } from "@material-ui/core";
 import Images from "constants/image";
 import { InputField } from "components/FormFields";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    maxWidth: "52rem",
     border: "1px solid #E0E0E0",
-    margin: "0 auto",
     borderRadius: "12px",
     padding: theme.spacing(3, 6),
+    marginTop: theme.spacing(3),
   },
 
   name: {
     textTransform: "uppercase",
-    color: "#BDBDBD",
+    color: "#828282",
     fontSize: "0.8125rem",
     marginLeft: theme.spacing(3),
   },
@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   avatar: {
-    width: theme.spacing(9),
-    height: theme.spacing(9),
+    width: theme.spacing(8),
+    height: theme.spacing(8),
     borderRadius: "8px",
   },
 
@@ -65,6 +65,12 @@ const EditForm = (props) => {
       </Box>
 
       <Box maxWidth='50%'>
+        <InputField label='Name' placeholder='Enter your name...' />
+        <InputField label='Bio' placeholder='Enter your bio...' rows='4' />
+        <InputField label='Phone' placeholder='Enter your phone...' />
+        <InputField label='Email' placeholder='Enter your email...' />
+        <InputField label='Password' placeholder='Enter your new password...' />
+
         <Button
           variant='contained'
           color='primary'

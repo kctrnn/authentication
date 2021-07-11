@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, makeStyles } from "@material-ui/core";
-import { InputField } from "components/FormFields";
+import { InputFieldWithIcon } from "components/FormFields";
 import Icons from "constants/icons";
 import PropTypes from "prop-types";
 import React from "react";
@@ -35,9 +35,12 @@ const AuthForm = ({ isLogin }) => {
   return (
     <div className='auth-form'>
       <form>
-        <InputField type='email' placeholder='Email' name='email' />
-
-        <InputField type='password' placeholder='Password' name='password' />
+        <InputFieldWithIcon type='email' placeholder='Email' name='email' />
+        <InputFieldWithIcon
+          type='password'
+          placeholder='Password'
+          name='password'
+        />
 
         <Button
           variant='contained'
