@@ -1,8 +1,3 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Icons from "constants/icons";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import {
   Box,
   Container,
@@ -10,12 +5,16 @@ import {
   ListItemText,
   withStyles,
 } from "@material-ui/core";
-import Images from "constants/image";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import GroupIcon from "@material-ui/icons/Group";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import GroupIcon from "@material-ui/icons/Group";
+import Icons from "constants/icons";
+import Images from "constants/image";
+import React, { useState } from "react";
 
 const StyledMenu = withStyles({
   paper: {

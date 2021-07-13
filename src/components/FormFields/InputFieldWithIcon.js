@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InputFieldWithIcon = (props) => {
+const InputFieldWithIcon = (props) => {
   const { placeholder, type, name, control } = props;
   const {
     field: { ref, ...inputProps },
@@ -65,3 +65,5 @@ InputFieldWithIcon.defaultProps = {
   placeholder: "",
   type: "text",
 };
+
+export default InputFieldWithIcon;

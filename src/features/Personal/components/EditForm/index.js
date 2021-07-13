@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Box, Button, makeStyles, Typography } from "@material-ui/core";
-import { InputField } from "components/FormFields";
+import InputField from "components/FormFields/InputField";
 import Images from "constants/image";
 import PropTypes from "prop-types";
 import React from "react";

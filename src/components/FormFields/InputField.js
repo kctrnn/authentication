@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InputField = (props) => {
+const InputField = (props) => {
   const { label, placeholder, type, name, control, rows } = props;
   const {
     field: { ref, ...inputProps },
@@ -62,3 +62,5 @@ InputField.defaultProps = {
   label: "",
   rows: 0,
 };
+
+export default InputField;
