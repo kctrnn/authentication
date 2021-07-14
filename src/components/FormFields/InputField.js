@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const InputField = (props) => {
-  const { label, placeholder, type, name, control, rows } = props;
+  const { label, placeholder, type, name, control, rows, size, autoFocus } =
+    props;
   const {
     field: { ref, ...inputProps },
     fieldState: { invalid, error },
@@ -24,8 +25,9 @@ const InputField = (props) => {
 
   return (
     <TextField
+      autoFocus={autoFocus}
       autoComplete='off'
-      size='small'
+      size={size}
       fullWidth
       label={label}
       placeholder={placeholder}
@@ -54,6 +56,8 @@ InputField.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
   rows: PropTypes.number,
+  size: PropTypes.string,
+  autoFocus: PropTypes.bool,
 };
 
 InputField.defaultProps = {
@@ -61,6 +65,8 @@ InputField.defaultProps = {
   type: "text",
   label: "",
   rows: 0,
+  size: "small",
+  autoFocus: false,
 };
 
 export default InputField;

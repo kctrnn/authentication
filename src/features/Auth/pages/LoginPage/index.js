@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "30rem",
     padding: theme.spacing(7, 7, 4),
     border: "1px solid #BDBDBD",
-    borderRadius: "1.5rem",
+    borderRadius: "1rem",
   },
 
   title: {
