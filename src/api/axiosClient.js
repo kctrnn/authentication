@@ -13,7 +13,22 @@ const axiosClient = axios.create({
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config) {
-    return config;
+    const customHeaders = {};
+
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      // customHeaders.Authorization = `Bearer ${accessToken}`;
+      customHeaders["auth-token"] = accessToken;
+    }
+
+    return {
+      ...config,
+      headers: {
+        ...customHeaders, // auto attach token
+        ...config.headers, // but you can override for some requests
+      },
+    };
+    // return config;
   },
 
   function (error) {
