@@ -3,10 +3,11 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import Icons from "constants/icons";
 import AuthForm from "features/Auth/components/AuthForm";
 import NameForm from "features/Auth/components/NameForm";
-import { register } from "features/Auth/userSlice";
+import { register, updateAccount } from "features/Auth/userSlice";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
 
 const SignupPage = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [namingMode, setNamingMode] = useState(true);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [namingMode, setNamingMode] = useState(false);
 
   const handleFormSubmit = async (data) => {
     try {
@@ -54,16 +57,33 @@ const SignupPage = () => {
       if (originalResult) {
         setNamingMode(true);
       }
-
-      // enqueueSnackbar("Sign up successfully", { variant: "success" });
     } catch (err) {
       console.log(err);
       enqueueSnackbar("Registration failed", { variant: "error" });
     }
   };
 
-  const handleNamingFormSubmit = (data) => {
+  const handleNamingFormSubmit = async (data) => {
     // Update name for account
+
+    const { id } = JSON.parse(localStorage.getItem("user"));
+
+    try {
+      const userData = {
+        id,
+        ...data,
+      };
+
+      const action = updateAccount(userData);
+      const resultAction = await dispatch(action);
+      unwrapResult(resultAction);
+
+      enqueueSnackbar("Sign up successfully", { variant: "success" });
+      history.push("/account");
+    } catch (err) {
+      console.log(err);
+      enqueueSnackbar("Registration failed", { variant: "error" });
+    }
   };
 
   return (

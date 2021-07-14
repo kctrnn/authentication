@@ -22,6 +22,18 @@ export const register = createAsyncThunk("user/register", async (payload) => {
   return data.user;
 });
 
+export const updateAccount = createAsyncThunk(
+  "user/update",
+  async (userData) => {
+    const { id, ...fields } = userData;
+    const response = await userApi.updateAccount(fields, id);
+
+    localStorage.setItem("user", JSON.stringify(response.user));
+
+    return response.user;
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -44,6 +56,10 @@ export const userSlice = createSlice({
     },
 
     [register.fulfilled]: (state, action) => {
+      state.current = action.payload;
+    },
+
+    [updateAccount.fulfilled]: (state, action) => {
       state.current = action.payload;
     },
   },

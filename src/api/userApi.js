@@ -10,6 +10,11 @@ const userApi = {
     const url = "/auth/register";
     return axiosClient.post(url, data);
   },
+
+  updateAccount: (data, userId) => {
+    const url = `/users/${userId}`;
+    return axiosClient.patch(url, data);
+  },
 };
 
 export default userApi;

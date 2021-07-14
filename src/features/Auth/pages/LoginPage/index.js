@@ -6,6 +6,7 @@ import { login } from "features/Auth/userSlice";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,8 +32,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginPage = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleFormSubmit = async (data) => {
     try {
@@ -42,6 +45,7 @@ const LoginPage = () => {
       unwrapResult(resultAction);
 
       enqueueSnackbar("Logged in successfully", { variant: "success" });
+      history.push("/account");
     } catch (err) {
       console.log(err);
       enqueueSnackbar("Login failed", { variant: "error" });
