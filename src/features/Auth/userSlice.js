@@ -1,22 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userApi from "api/userApi";
 
-const login = createAsyncThunk("user/login", async (payload) => {
+export const login = createAsyncThunk("user/login", async (payload) => {
   const data = await userApi.login(payload);
+  console.log(data);
 
   //   save data to local storage
-  localStorage.setItem("user", data.user);
-  localStorage.setItem("access_token", JSON.stringify(data.jwt));
+  localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("access_token", data.jwt);
 
   return data.user;
 });
 
-const register = createAsyncThunk("user/register", async (payload) => {
+export const register = createAsyncThunk("user/register", async (payload) => {
   const data = await userApi.register(payload);
 
   //   save data to local storage
-  localStorage.setItem("user", data.user);
-  localStorage.setItem("access_token", JSON.stringify(data.jwt));
+  localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("access_token", data.jwt);
 
   return data.user;
 });

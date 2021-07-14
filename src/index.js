@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -17,9 +18,11 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+        <SnackbarProvider>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </SnackbarProvider>
       </Provider>
     </Router>
   </React.StrictMode>,

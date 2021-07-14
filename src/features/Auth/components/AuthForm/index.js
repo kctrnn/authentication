@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Avatar, Box, Button, makeStyles } from "@material-ui/core";
+import { Avatar, Button, makeStyles } from "@material-ui/core";
 import InputFieldWithIcon from "components/FormFields/InputFieldWithIcon";
 import Icons from "constants/icons";
 import PropTypes from "prop-types";
@@ -59,59 +59,55 @@ const AuthForm = ({ isLogin, onSubmit }) => {
   } = form;
 
   return (
-    <div onSubmit={handleSubmit(onSubmit)} className='auth-form'>
-      <form>
+    <div className='auth-form'>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputFieldWithIcon
+          name='email'
           control={control}
           type='email'
           placeholder='Email'
-          name='email'
         />
 
         <InputFieldWithIcon
+          name='password'
           control={control}
           type='password'
           placeholder='Password'
-          name='password'
         />
 
         <Button
+          className={classes.button}
           type='submit'
           variant='contained'
           color='primary'
           fullWidth
           disableElevation
-          className={classes.button}
           disabled={isSubmitting}
         >
           {isLogin ? "Login" : "Start coding now"}
         </Button>
       </form>
 
-      <Box>
+      <p className={classes.paragraph}>or continue with these social profile</p>
+
+      <div className={classes.social}>
+        <Avatar alt='' src={Icons.FACEBOOK_ICON} />
+        <Avatar alt='' src={Icons.GITHUB_ICON} />
+        <Avatar alt='' src={Icons.GOOGLE_ICON} />
+        <Avatar alt='' src={Icons.TWITTER_ICON} />
+      </div>
+
+      {!isLogin && (
         <p className={classes.paragraph}>
-          or continue with these social profile
+          Already a member? <Link to='/auth/login'>Login</Link>
         </p>
+      )}
 
-        <div className={classes.social}>
-          <Avatar alt='' src={Icons.FACEBOOK_ICON} />
-          <Avatar alt='' src={Icons.GITHUB_ICON} />
-          <Avatar alt='' src={Icons.GOOGLE_ICON} />
-          <Avatar alt='' src={Icons.TWITTER_ICON} />
-        </div>
-
-        {!isLogin && (
-          <p className={classes.paragraph}>
-            Already a member? <Link to='/auth/login'>Login</Link>
-          </p>
-        )}
-
-        {isLogin && (
-          <p className={classes.paragraph}>
-            Don’t have an account yet? <Link to='/auth/register'>Register</Link>
-          </p>
-        )}
-      </Box>
+      {isLogin && (
+        <p className={classes.paragraph}>
+          Don’t have an account yet? <Link to='/auth/register'>Register</Link>
+        </p>
+      )}
     </div>
   );
 };

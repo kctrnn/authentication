@@ -1,7 +1,11 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
+import { unwrapResult } from "@reduxjs/toolkit";
 import Icons from "constants/icons";
 import AuthForm from "features/Auth/components/AuthForm";
+import { register } from "features/Auth/userSlice";
+import { useSnackbar } from "notistack";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,9 +35,25 @@ const useStyles = makeStyles((theme) => ({
 
 const SignupPage = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleFormSubmit = async (data) => {
+    try {
+      const action = register(data);
+
+      const resultAction = await dispatch(action);
+      unwrapResult(resultAction);
+
+      enqueueSnackbar("Sign up successfully", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      enqueueSnackbar("Registration failed", { variant: "error" });
+    }
+  };
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <Box className={classes.form}>
         <img src={Icons.DEV_ICON} alt='' />
 
@@ -46,9 +66,9 @@ const SignupPage = () => {
           multiple paths for you to choose
         </Typography>
 
-        <AuthForm />
+        <AuthForm onSubmit={handleFormSubmit} />
       </Box>
-    </div>
+    </Box>
   );
 };
 
