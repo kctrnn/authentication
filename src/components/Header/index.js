@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Container,
   ListItemIcon,
@@ -13,8 +14,10 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import GroupIcon from "@material-ui/icons/Group";
 import Icons from "constants/icons";
-import Images from "constants/image";
+import { logout } from "features/Auth/userSlice";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const StyledMenu = withStyles({
   paper: {
@@ -90,6 +93,16 @@ const styles = (theme) => ({
 
 const Header = ({ classes }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const loggedInUser = useSelector((state) => state.user.current);
+  const isLoggedIn = !!loggedInUser.id;
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const avaName = loggedInUser.name
+    .split(" ")
+    .map((w) => w.charAt(0))
+    .join("");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -97,6 +110,13 @@ const Header = ({ classes }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogoutClick = () => {
+    const action = logout();
+    dispatch(action);
+
+    history.push("/");
   };
 
   return (
@@ -113,11 +133,25 @@ const Header = ({ classes }) => {
           </a>
 
           <div className='user'>
-            <Box className={classes.toggle} onClick={handleClick}>
-              <img src={Images.KCTRNN} alt='' />
-              <h4>Xanthe Neal</h4>
-              {Boolean(anchorEl) ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-            </Box>
+            {isLoggedIn && (
+              <Box className={classes.toggle} onClick={handleClick}>
+                {loggedInUser.avatarUrl && (
+                  <img src={loggedInUser.avatarUrl} alt='' />
+                )}
+
+                {!loggedInUser.avatarUrl && (
+                  <Avatar variant='rounded'>{avaName}</Avatar>
+                )}
+
+                <h4>{loggedInUser.name}</h4>
+
+                {Boolean(anchorEl) ? (
+                  <ArrowDropUpIcon />
+                ) : (
+                  <ArrowDropDownIcon />
+                )}
+              </Box>
+            )}
 
             <StyledMenu
               anchorEl={anchorEl}
@@ -141,7 +175,7 @@ const Header = ({ classes }) => {
 
               <hr style={{ border: "1px solid #E0E0E0", margin: ".5rem 0" }} />
 
-              <StyledMenuItem onClick={handleClose}>
+              <StyledMenuItem onClick={handleLogoutClick}>
                 <StyledListItemIcon>
                   <ExitToAppIcon fontSize='small' />
                 </StyledListItemIcon>
@@ -154,7 +188,5 @@ const Header = ({ classes }) => {
     </div>
   );
 };
-
-Header.propTypes = {};
 
 export default withStyles(styles)(Header);
