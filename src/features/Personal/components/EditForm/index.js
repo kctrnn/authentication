@@ -7,6 +7,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import { unwrapResult } from "@reduxjs/toolkit";
 import userApi from "api/userApi";
 import InputField from "components/FormFields/InputField";
@@ -63,11 +64,35 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: theme.spacing(8),
     height: theme.spacing(8),
-    transition: "background-color 300ms ease-in-out",
+    position: "relative",
 
     "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, .3)",
       cursor: "pointer",
+
+      "& > svg": {
+        opacity: 1,
+      },
+
+      "& > div": {
+        opacity: 0.8,
+      },
+    },
+
+    "& > div": {
+      width: "100%",
+      height: "100%",
+      transition: "opacity 200ms ease-in-out",
+    },
+
+    "& > svg": {
+      opacity: 0,
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+
+      color: "white",
+      transition: "opacity 200ms ease-in-out",
     },
   },
 
@@ -166,13 +191,16 @@ const EditForm = ({ onSubmit, initialValues }) => {
         )}
 
         {progress === 0 && (
-          <Avatar
-            variant='rounded'
-            src={imageUrl}
-            alt=''
-            className={classes.avatar}
-            onClick={handleChangeAvatarClick}
-          />
+          <Box className={classes.avatar}>
+            <Avatar
+              variant='rounded'
+              src={imageUrl}
+              alt=''
+              onClick={handleChangeAvatarClick}
+            />
+
+            <PhotoCameraIcon />
+          </Box>
         )}
 
         <Typography component='h3' variant='body1' className={classes.name}>
