@@ -1,10 +1,20 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Avatar, Box, Button, makeStyles, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import { unwrapResult } from "@reduxjs/toolkit";
+import userApi from "api/userApi";
 import InputField from "components/FormFields/InputField";
-import Images from "constants/image";
+import { updateAccount } from "features/Auth/userSlice";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 const phoneRegExp =
@@ -56,7 +66,12 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: theme.spacing(8),
     height: theme.spacing(8),
-    borderRadius: "8px",
+    transition: "background-color 300ms ease-in-out",
+
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, .3)",
+      cursor: "pointer",
+    },
   },
 
   button: {
@@ -67,6 +82,12 @@ const useStyles = makeStyles((theme) => ({
 
 const EditForm = ({ onSubmit, initialValues }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const inputFile = useRef(null);
+
+  const [imageUrl, setImageUrl] = useState(() => initialValues.avatarUrl);
+  const [progress, setProgress] = useState(0);
 
   const form = useForm({
     defaultValues: initialValues,
@@ -79,6 +100,49 @@ const EditForm = ({ onSubmit, initialValues }) => {
     formState: { isSubmitting },
   } = form;
 
+  const handleChangeAvatarClick = () => {
+    inputFile.current.click();
+  };
+
+  const handleUploadAvatar = async (e) => {
+    try {
+      const imageFile = e.target.files[0];
+      const formData = new FormData();
+      formData.append("image", imageFile);
+
+      const options = {
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          let percent = Math.round((loaded * 100) / total);
+
+          if (percent < 100) {
+            setProgress(percent);
+          }
+        },
+      };
+
+      // upload image and get imageUrl
+      const response = await userApi.uploadAvatar(formData, options);
+      const { url } = response;
+
+      setImageUrl(url);
+      setProgress(100);
+
+      setTimeout(() => {
+        setProgress(0);
+      }, 1000);
+
+      const newData = { id: initialValues.id, avatarUrl: url };
+
+      // update account
+      const action = updateAccount(newData);
+      const resultAction = await dispatch(action);
+      unwrapResult(resultAction);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <Typography component='h2' variant='h5' color='textPrimary'>
@@ -90,12 +154,26 @@ const EditForm = ({ onSubmit, initialValues }) => {
       </Typography>
 
       <Box className={classes.profileItem}>
-        <Avatar
-          variant='rounded'
-          src={initialValues.avatarUrl}
-          alt=''
-          className={classes.avatar}
+        <input
+          type='file'
+          ref={inputFile}
+          onChange={handleUploadAvatar}
+          hidden
         />
+
+        {progress > 0 && (
+          <CircularProgress variant='determinate' value={progress} />
+        )}
+
+        {progress === 0 && (
+          <Avatar
+            variant='rounded'
+            src={imageUrl}
+            alt=''
+            className={classes.avatar}
+            onClick={handleChangeAvatarClick}
+          />
+        )}
 
         <Typography component='h3' variant='body1' className={classes.name}>
           Change Photo

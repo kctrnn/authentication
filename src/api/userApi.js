@@ -20,6 +20,12 @@ const userApi = {
     const url = `/users/${id}`;
     return axiosClient.get(url);
   },
+
+  // Upload avatar
+  uploadAvatar: (data, config) => {
+    const url = "/upload";
+    return axiosClient.post(url, data, config);
+  },
 };
 
 export default userApi;
