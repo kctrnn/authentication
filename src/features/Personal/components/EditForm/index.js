@@ -92,7 +92,7 @@ const EditForm = ({ onSubmit, initialValues }) => {
       <Box className={classes.profileItem}>
         <Avatar
           variant='rounded'
-          src={Images.KCTRNN}
+          src={initialValues.avatarUrl}
           alt=''
           className={classes.avatar}
         />

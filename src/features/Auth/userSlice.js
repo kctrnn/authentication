@@ -34,6 +34,14 @@ export const updateAccount = createAsyncThunk(
   }
 );
 
+export const fetchUserById = createAsyncThunk(
+  "user/fetchByIdStatus",
+  async (userId) => {
+    const response = await userApi.getUser(userId);
+    return response.user;
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -60,6 +68,10 @@ export const userSlice = createSlice({
     },
 
     [updateAccount.fulfilled]: (state, action) => {
+      state.current = action.payload;
+    },
+
+    [fetchUserById.fulfilled]: (state, action) => {
       state.current = action.payload;
     },
   },

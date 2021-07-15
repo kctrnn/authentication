@@ -1,18 +1,41 @@
-import { Box } from "@material-ui/core";
+import { Box, LinearProgress, makeStyles } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { unwrapResult } from "@reduxjs/toolkit";
 import Header from "components/Header";
+import { fetchUserById } from "features/Auth/userSlice";
 import EditForm from "features/Personal/components/EditForm";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+
+const useStyles = makeStyles((theme) => ({
+  progress: {
+    marginTop: theme.spacing(4),
+  },
+}));
 
 const EditPage = () => {
-  const initialValues = {
-    name: "",
-    bio: "",
-    phone: "",
-    email: "",
-    password: "",
-  };
+  const classes = useStyles();
+
+  const [data, setData] = useState(null);
+  const { userId } = useParams();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchUser = async (id) => {
+      const action = fetchUserById(id);
+
+      const resultAction = await dispatch(action);
+      const originalResult = unwrapResult(resultAction);
+
+      if (originalResult) {
+        setData(originalResult);
+      }
+    };
+
+    fetchUser(userId);
+  }, [userId, dispatch]);
 
   const handleEditFormSubmit = (formValues) => {
     console.log(formValues);
@@ -30,10 +53,11 @@ const EditPage = () => {
           </Box>
         </Link>
 
-        <EditForm
-          initialValues={initialValues}
-          onSubmit={handleEditFormSubmit}
-        />
+        {data ? (
+          <EditForm initialValues={data} onSubmit={handleEditFormSubmit} />
+        ) : (
+          <LinearProgress className={classes.progress} />
+        )}
       </Box>
     </div>
   );

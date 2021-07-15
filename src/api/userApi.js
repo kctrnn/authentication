@@ -15,6 +15,11 @@ const userApi = {
     const url = `/users/${userId}`;
     return axiosClient.patch(url, data);
   },
+
+  getUser: (id) => {
+    const url = `/users/${id}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default userApi;
