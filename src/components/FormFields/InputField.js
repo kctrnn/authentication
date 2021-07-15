@@ -39,7 +39,9 @@ const InputField = (props) => {
       InputProps={{
         className: classes.input,
       }}
-      InputLabelProps={{ style: { fontSize: 13, color: "#4F4F4F" } }}
+      InputLabelProps={{
+        style: { fontSize: 13, color: "#4F4F4F" },
+      }}
       {...inputProps}
       inputRef={ref}
       error={invalid}

@@ -17,9 +17,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -32,14 +29,14 @@ const schema = yup.object().shape({
     }),
 
   bio: yup.string(),
-  phone: yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  phone: yup.string(),
 
   email: yup
     .string()
     .required("Please enter your email")
     .email("Please enter a valid email address"),
 
-  password: yup.string().required("Please enter your password"),
+  password: yup.string(),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +87,10 @@ const EditForm = ({ onSubmit, initialValues }) => {
   const [progress, setProgress] = useState(0);
 
   const form = useForm({
-    defaultValues: initialValues,
+    defaultValues: {
+      ...initialValues,
+      password: "",
+    },
     resolver: yupResolver(schema),
   });
 

@@ -2,8 +2,9 @@ import { Box, LinearProgress, makeStyles } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Header from "components/Header";
-import { fetchUserById } from "features/Auth/userSlice";
+import { fetchUserById, updateAccount } from "features/Auth/userSlice";
 import EditForm from "features/Personal/components/EditForm";
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -21,6 +22,7 @@ const EditPage = () => {
   const { userId } = useParams();
 
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     const fetchUser = async (id) => {
@@ -37,8 +39,23 @@ const EditPage = () => {
     fetchUser(userId);
   }, [userId, dispatch]);
 
-  const handleEditFormSubmit = (formValues) => {
-    console.log(formValues);
+  const handleEditFormSubmit = async (formValues) => {
+    try {
+      // Check if password has not been changed
+      const { password } = formValues;
+      if (!password) {
+        delete formValues.password;
+      }
+
+      const action = updateAccount(formValues);
+      const resultAction = await dispatch(action);
+      unwrapResult(resultAction);
+
+      enqueueSnackbar("Update account successfully", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      enqueueSnackbar("Update failed", { variant: "error" });
+    }
   };
 
   return (
