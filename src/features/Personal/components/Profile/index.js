@@ -1,7 +1,6 @@
-// import PropTypes from "prop-types";
 import { Avatar, Box, Button, makeStyles, Typography } from "@material-ui/core";
-import Images from "constants/image";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,8 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = (props) => {
+const Profile = () => {
   const classes = useStyles();
+  const loggedInUser = useSelector((state) => state.user.current);
+  const { id, name, email, bio, phone, avatarUrl } = loggedInUser;
 
   return (
     <div className={classes.profile}>
@@ -61,7 +62,7 @@ const Profile = (props) => {
           variant='outlined'
           size='small'
           component={Link}
-          to='/account/kctrnn'
+          to={`/account/${id}`}
         >
           Edit
         </Button>
@@ -74,7 +75,7 @@ const Profile = (props) => {
 
         <Avatar
           variant='rounded'
-          src={Images.KCTRNN}
+          src={avatarUrl}
           alt=''
           className={classes.avatar}
         />
@@ -86,7 +87,7 @@ const Profile = (props) => {
         </Typography>
 
         <Typography variant='body1' className={classes.content}>
-          BXanthe Neal
+          {name}
         </Typography>
       </Box>
 
@@ -96,7 +97,7 @@ const Profile = (props) => {
         </Typography>
 
         <Typography variant='body1' className={classes.content}>
-          I am a software developer and a big fan of devchallenges...
+          {bio}
         </Typography>
       </Box>
 
@@ -106,7 +107,7 @@ const Profile = (props) => {
         </Typography>
 
         <Typography variant='body1' className={classes.content}>
-          908249274292
+          {phone}
         </Typography>
       </Box>
 
@@ -116,7 +117,7 @@ const Profile = (props) => {
         </Typography>
 
         <Typography variant='body1' className={classes.content}>
-          xanthe.neal@gmail.com
+          {email}
         </Typography>
       </Box>
 
@@ -126,13 +127,11 @@ const Profile = (props) => {
         </Typography>
 
         <Typography variant='body1' className={classes.content}>
-          ************
+          **********
         </Typography>
       </Box>
     </div>
   );
 };
-
-Profile.propTypes = {};
 
 export default Profile;

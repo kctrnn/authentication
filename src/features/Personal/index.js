@@ -12,7 +12,7 @@ const Personal = () => {
         <MainPage />
       </Route>
 
-      <Route path={`${match.path}/:username`}>
+      <Route path={`${match.path}/:userId`}>
         <EditPage />
       </Route>
     </Switch>

@@ -75,19 +75,18 @@ const styles = (theme) => ({
     alignItems: "center",
     cursor: "pointer",
 
-    "& > img": {
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      objectFit: "cover",
-      borderRadius: "8px",
-    },
-
     "& > h4": {
       fontSize: "12px",
       marginLeft: "12px",
       marginRight: "14px",
       userSelect: "none",
     },
+  },
+
+  avatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
 });
 
@@ -98,11 +97,6 @@ const Header = ({ classes }) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const avaName = loggedInUser.name
-    .split(" ")
-    .map((w) => w.charAt(0))
-    .join("");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -135,13 +129,12 @@ const Header = ({ classes }) => {
           <div className='user'>
             {isLoggedIn && (
               <Box className={classes.toggle} onClick={handleClick}>
-                {loggedInUser.avatarUrl && (
-                  <img src={loggedInUser.avatarUrl} alt='' />
-                )}
-
-                {!loggedInUser.avatarUrl && (
-                  <Avatar variant='rounded'>{avaName}</Avatar>
-                )}
+                <Avatar
+                  variant='rounded'
+                  src={loggedInUser.avatarUrl}
+                  alt=''
+                  className={classes.avatar}
+                />
 
                 <h4>{loggedInUser.name}</h4>
 
