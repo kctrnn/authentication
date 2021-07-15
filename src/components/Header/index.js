@@ -15,6 +15,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import GroupIcon from "@material-ui/icons/Group";
 import Icons from "constants/icons";
 import { logout } from "features/Auth/userSlice";
+import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -98,6 +99,8 @@ const Header = ({ classes }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -110,7 +113,15 @@ const Header = ({ classes }) => {
     const action = logout();
     dispatch(action);
 
+    enqueueSnackbar("See you again 👋👋", {
+      variant: "info",
+    });
+
     history.push("/");
+  };
+
+  const handleMyProfileClick = () => {
+    history.push("/account");
   };
 
   return (
@@ -150,7 +161,7 @@ const Header = ({ classes }) => {
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClick={handleMyProfileClick}
             >
               <StyledMenuItem onClick={handleClose}>
                 <StyledListItemIcon>

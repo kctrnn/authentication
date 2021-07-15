@@ -44,7 +44,7 @@ const LoginPage = () => {
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
-      enqueueSnackbar("Logged in successfully", { variant: "success" });
+      enqueueSnackbar("Logged in successfully 🎉🎉", { variant: "success" });
       history.push("/account");
     } catch (err) {
       console.log(err);

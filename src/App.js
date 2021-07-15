@@ -1,3 +1,4 @@
+import AuthRoute from "components/Common/AuthRoute";
 import PrivateRoute from "components/Common/PrivateRoute";
 import NotFound from "components/NotFound";
 import Auth from "features/Auth";
@@ -10,10 +11,12 @@ function App() {
       <Switch>
         <Redirect exact from='/' to='/auth' />
 
-        <Route path='/auth' component={Auth} />
+        <AuthRoute path='/auth'>
+          <Auth />
+        </AuthRoute>
 
         <PrivateRoute path='/account'>
-          <Route path='/account' component={Personal} />
+          <Personal />
         </PrivateRoute>
 
         <Route component={NotFound} />

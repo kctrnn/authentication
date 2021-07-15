@@ -78,7 +78,7 @@ const SignupPage = () => {
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
-      enqueueSnackbar("Sign up successfully", { variant: "success" });
+      enqueueSnackbar("Sign up successfully 🎉🎉", { variant: "success" });
       history.push("/account");
     } catch (err) {
       console.log(err);

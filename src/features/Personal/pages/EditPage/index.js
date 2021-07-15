@@ -51,7 +51,9 @@ const EditPage = () => {
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
-      enqueueSnackbar("Update account successfully", { variant: "success" });
+      enqueueSnackbar("Update account successfully 🎉🎉", {
+        variant: "success",
+      });
     } catch (err) {
       console.log(err);
       enqueueSnackbar("Update failed", { variant: "error" });
