@@ -5,6 +5,12 @@ import SignupPage from "./pages/SignupPage";
 
 const Auth = () => {
   let match = useRouteMatch();
+  
+  // redirect to personal page if is logged in
+  const isLoggedIn = Boolean(localStorage.getItem("access_token"));
+  if (isLoggedIn) {
+    history.push("/account");
+  }
 
   return (
     <Switch>
