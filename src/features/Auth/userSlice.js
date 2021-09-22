@@ -3,7 +3,6 @@ import userApi from "api/userApi";
 
 export const login = createAsyncThunk("user/login", async (payload) => {
   const data = await userApi.login(payload);
-  console.log(data);
 
   //   save data to local storage
   localStorage.setItem("user", JSON.stringify(data.user));
